@@ -197,6 +197,9 @@ chrome.storage.sync.get("notifyInterval", function (obj) {
 	if(obj.notifyInterval){
 		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(obj.notifyInterval)});
 	}
+	else{
+		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(Options.notifyInterval)});
+	}
 });
 chrome.alarms.onAlarm.addListener(function(alarm) {
 	if(alarm.name == "getNotify"){
