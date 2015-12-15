@@ -38,7 +38,8 @@
 		"bookmarks",
 		"alarms",
 		"storage",
-		"downloads"
+		"downloads",
+		"management"
 	],
   
 	"page_action": {
