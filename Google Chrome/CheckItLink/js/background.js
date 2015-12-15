@@ -1,21 +1,22 @@
 // background.js
 
-/*
-*	Создаем пункты в контекстном меню
-*/
+/**
+ * Создаем пункты в контекстном меню
+ * @return {None}
+ */
 function createMenu(){
 	chrome.contextMenus.removeAll(function(){});
-	/*
-	*	создаем корневой пункт меню
-	*/
+	/**
+	 * Создаем корневой пункт меню
+	 */
 	var root = chrome.contextMenus.create({
 		title: chrome.i18n.getMessage("addUrlToBookmarks_menu_root"), 
 		contexts: ["link", "page"],
 		id: "addUrlToBookmarks"
 	});
-	/*
-	*	создаем вложенные пункты
-	*/
+	/**
+	 * Создаем вложенные пункты
+	 */
 	var item1 = chrome.contextMenus.create({
 		title: chrome.i18n.getMessage("addUrlToBookmarks_menu_item1"), 
 		contexts: ["page"],
@@ -42,16 +43,18 @@ function createMenu(){
 	});
 }
 
-/*
-*	Обработчик клика по пункту меню
-*/
+/**
+ * Обработчик клика по пункту меню
+ * @param {Object} info [Информация о нажатом пункте меню]
+ * @param {Object} tab [Информация о текущей вкладке]
+ */
 function addUrlToBookmarks(info, tab){
 	//alert("info: " + JSON.stringify(info));
 	//alert("tab: " + JSON.stringify(tab));
 	switch(info.menuItemId){
-		/*
-		*	если нажат пункт меню "Добавить текущую страницу"
-		*/
+		/**
+		 *	Если нажат пункт меню "Добавить текущую страницу"
+		 */
 		case "addUrl_item1":
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
@@ -65,9 +68,9 @@ function addUrlToBookmarks(info, tab){
 				});
 			});
 			break;
-		/*
-		*	если нажат пункт меню "Экспорт на сайт"
-		*/
+		/**
+		 * Если нажат пункт меню "Экспорт на сайт"
+		 */
 		case "addUrl_item2":
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
@@ -81,9 +84,9 @@ function addUrlToBookmarks(info, tab){
 				});
 			});
 			break;
-		/*
-		*	если нажат пункт меню "Экспорт в файл"
-		*/
+		/**
+		 * Если нажат пункт меню "Экспорт в файл"
+		 */
 		case "addUrl_item3":
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
@@ -97,9 +100,9 @@ function addUrlToBookmarks(info, tab){
 				});
 			});
 			break;
-		/*
-		*	если нажат пункт меню "Добавить ссылку под курсором"
-		*/
+		/**
+		 * Если нажат пункт меню "Добавить ссылку под курсором"
+		 */
 		case "addUrl_item6":
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
@@ -116,15 +119,15 @@ function addUrlToBookmarks(info, tab){
 	}
 }
 
-/*
-*	вешаем обработчик на вызов пункта меню
-*/
+/**
+ * Вешаем обработчик на вызов пункта меню
+ */
 chrome.contextMenus.onClicked.addListener(addUrlToBookmarks);
 
-/*
-*	При обновлении вкладки показываем или скрываем иконку расширения и пункты меню.
-*	Разрешаем работу только на страницах с протоколом http, https, ftp
-*/
+/**
+ * При обновлении вкладки показываем или скрываем иконку расширения и пункты меню.
+ * Разрешаем работу только на страницах с протоколом http, https, ftp
+ */
 chrome.tabs.onUpdated.addListener(function(id,info,tab){
 	var re = new RegExp(/^(https?)|(ftp)\:\/\/.*/i);
 	if (re.test(tab.url)){
@@ -139,9 +142,10 @@ chrome.tabs.onUpdated.addListener(function(id,info,tab){
 });
 
 
-/*
-*	Функция отправляет запрос на сервер и показывает уведомления если они есть
-*/
+/**
+ * Функция отправляет запрос на сервер и показывает уведомления если они есть
+ * @return {None}
+ */
 function getNotify(){
 	chrome.storage.sync.get(["notifyFlag", "SECRET_KEY"], function (obj) {
 		if(obj.notifyFlag){
@@ -157,7 +161,7 @@ function getNotify(){
 				dataType: 'json',
 				data: {request: JSON.stringify(params)},
 				error: function(jqXHR, textStatus, errorThrown){
-					alert(chrome.i18n.getMessage("AJAXError"));
+					//alert(chrome.i18n.getMessage("AJAXError"));
 					try {
 						console.error(jqXHR.responseText);
 					} 
@@ -186,11 +190,13 @@ function getNotify(){
 	});
 }
 
-/*
-*	По таймеру получаем уведомления с сайта
-*/
+/**
+ * По таймеру получаем уведомления с сайта
+ */
 chrome.storage.sync.get("notifyInterval", function (obj) {
-	chrome.alarms.create("getNotify", {periodInMinutes: parseInt(obj.notifyInterval)});
+	if(obj.notifyInterval){
+		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(obj.notifyInterval)});
+	}
 });
 chrome.alarms.onAlarm.addListener(function(alarm) {
 	if(alarm.name == "getNotify"){
@@ -198,21 +204,19 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 	}
 });
 
-/*
-*	Устанавливаем ссылку, которая откроется после установки расширения
-*/
+/**
+ * Устанавливаем ссылку, которая откроется после установки расширения
+ */
 chrome.runtime.onInstalled.addListener(function(details){
 	if(Options.InstallURL === true){
 		chrome.tabs.create({url:Options.InstallURL},function(tab){}); 
 	}
-	chrome.storage.sync.set({"InstallType": chrome.management.ExtensionInstallType}, function(item){
-		Options.InstallType = item.InstallType;
-	});
 });
 
-/*
-*	Устанавливаем ссылку, которая откроется после удаления расширения
-*/
+/**
+ * Устанавливаем ссылку, которая откроется после удаления расширения
+ */
 if(Options.UninstallURL === true){
 	chrome.runtime.setUninstallURL(Options.UninstallURL);
 }
+

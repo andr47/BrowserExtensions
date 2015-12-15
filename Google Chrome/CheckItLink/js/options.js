@@ -93,8 +93,7 @@ function save_options() {
 }
 
 function restore_options() {
-	chrome.storage.sync.get(["notifyInterval", "notifyFlag", "InstallType"], function (obj) {
-		Options.InstallType = obj.InstallType;
+	chrome.storage.sync.get(["notifyInterval", "notifyFlag"], function (obj) {
 		var interval = obj.notifyInterval;
 		var checked = obj.notifyFlag;
 		if(interval){
@@ -113,7 +112,7 @@ function restore_options() {
 		else {
 			checked = Options.notifyFlag;
 			$('#NotifyCheckbox').prop("checked", checked);
-			chrome.storage.sync.set({"notifyInterval": String(checked)});
+			chrome.storage.sync.set({"notifyFlag": String(checked)});
 		}
 	});
 }
@@ -123,12 +122,15 @@ $('#options_page_button_save_options').on('click', function() {
 	save_options();
 });
 
-$('#NotifyIntervalInput').attr({"min": String(Options.notifyIntervalMin)});
-$('#NotifyIntervalInput').attr({"max": String(Options.notifyIntervalMax)});
-$('#options_page_NotifyCheckbox').html(chrome.i18n.getMessage("options_page_NotifyCheckbox"));
-$('#options_page_NotifyIntervalInput').html(chrome.i18n.getMessage("options_page_NotifyIntervalInput"));
-$('#options_page_button_save_options').html('<span class="glyphicon glyphicon-ok"></span> '+chrome.i18n.getMessage("options_page_button_save_options"));
 
+/**
+ * Обработчик события загрузки страницы настроек
+ */
 $(document).ready(function(){
+	$('#NotifyIntervalInput').attr({"min": String(Options.notifyIntervalMin)});
+	$('#NotifyIntervalInput').attr({"max": String(Options.notifyIntervalMax)});
+	$('#options_page_NotifyCheckbox').text(chrome.i18n.getMessage("options_page_NotifyCheckbox"));
+	$('#options_page_NotifyIntervalInput').text(chrome.i18n.getMessage("options_page_NotifyIntervalInput"));
+	$('#options_page_button_save_options_text').text(chrome.i18n.getMessage("options_page_button_save_options"));
 	restore_options();
 });
