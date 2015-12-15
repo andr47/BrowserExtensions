@@ -40,18 +40,66 @@ function goImport(){
 *	Функция создает папки для закладок при импорте
 */
 function addFolder(name,from,to,bookmarks,bookcount,root){
-	chrome.bookmarks.create({title:name,parentId:String(root.id)},function(node)
+	// Запускаем создание папок и закладок
+	// Ищем папку по названию
+	chrome.bookmarks.search({title:name}, function(searchFolder)
 	{
-		for (var z=bookmarks.length-1;z>=0;z--)
+		//alert(JSON.stringify(searchFolder));
+		// Если папки нет
+		if(searchFolder.length == 0)
 		{
-			if (bookmarks[z].index > from && bookmarks[z].index < to)
+			// Создаем папку
+			chrome.bookmarks.create({title:name,parentId:String(root.id)},function(node)
 			{
-				chrome.bookmarks.create({title:bookmarks[z].title,url:bookmarks[z].url,parentId:node.id},function(){});
-				bookmarks.splice(z,1);
-
-				if (bookmarks.length == 0)
+				// Создаем в ней закладки
+				for (var z=bookmarks.length-1;z>=0;z--)
 				{
-					//alert(chrome.i18n.getMessage("fileImportSuccess", bookcount));
+					if (bookmarks[z].index > from && bookmarks[z].index < to)
+					{
+						// Ищем закладку по url
+						chrome.bookmarks.search({url:bookmarks[z].url}, function(searchBookmark)
+						{
+							// Если закладки нет
+							if(searchBookmark.length == 0)
+							{
+								// Создаем ее
+								chrome.bookmarks.create({title:bookmarks[z].title,url:bookmarks[z].url,parentId:node.id},function(){});
+								bookmarks.splice(z,1);
+
+								if (bookmarks.length == 0)
+								{
+									//alert(chrome.i18n.getMessage("fileImportSuccess", bookcount));
+								}
+							}
+						});
+					}
+				}
+			});
+		}
+		// если папка есть
+		else
+		{
+			// создаем в ней закладки
+			for (var z=bookmarks.length-1;z>=0;z--)
+			{
+				if (bookmarks[z].index > from && bookmarks[z].index < to)
+				{
+					// Ищем закладку по url
+					chrome.bookmarks.search({url:bookmarks[z].url}, function(searchBookmark)
+					{
+						// Если закладки нет
+						if(searchBookmark.length == 0)
+						{
+							// Создаем ее
+							chrome.bookmarks.create({title:bookmarks[z].title,url:bookmarks[z].url,parentId:searchFolder[0].id},function(){});
+							bookmarks.splice(z,1);
+
+							if (bookmarks.length == 0)
+							{
+								//alert(chrome.i18n.getMessage("fileImportSuccess", bookcount));
+							}
+						}
+					});
 				}
 			}
 		}
