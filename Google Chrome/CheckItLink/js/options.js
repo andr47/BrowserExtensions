@@ -93,7 +93,8 @@ function save_options() {
 }
 
 function restore_options() {
-	chrome.storage.sync.get(["notifyInterval", "notifyFlag"], function (obj) {
+	chrome.storage.sync.get(["notifyInterval", "notifyFlag", "InstallType"], function (obj) {
+		Options.InstallType = obj.InstallType;
 		var interval = obj.notifyInterval;
 		var checked = obj.notifyFlag;
 		if(interval){
