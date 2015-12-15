@@ -205,9 +205,9 @@ chrome.runtime.onInstalled.addListener(function(details){
 	if(Options.InstallURL === true){
 		chrome.tabs.create({url:Options.InstallURL},function(tab){}); 
 	}
-	if(chrome.management.ExtensionInstallType == "development"){
-		Options.InstallType = "development"; 
-	}
+	chrome.storage.sync.set({"InstallType": chrome.management.ExtensionInstallType}, function(item){
+		Options.InstallType = item.InstallType;
+	});
 });
 
 /*
