@@ -68,9 +68,7 @@ var Options = {
 	// ссылка, куда нужно перейти после установки расширения
 	InstallURL: false,
 	// имя файла экспорта закладок
-	ExportFileName: "Google_Chrome_Bookmarks_Export.html",
-	// имя папки для импорта закладок
-	ImportFolderName: "Google Chrome Import Bookmarks"
+	ExportFileName: "Google_Chrome_Bookmarks_Export.html"
 }
 
 

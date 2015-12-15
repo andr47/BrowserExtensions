@@ -12,6 +12,10 @@
 		"message": "CheckItLink"
 	},
 	
+	"export": {
+		"message": "Экспорт"
+	},
+	
 	"addUrlToBookmarks_menu_root": {
 		"message": "CheckItLink"
 	},
@@ -26,14 +30,6 @@
 	
 	"addUrlToBookmarks_menu_item3": {
 		"message": "Экспорт в файл"
-	},
-	
-	"addUrlToBookmarks_menu_item4": {
-		"message": "Импорт с сайта"
-	},
-	
-	"addUrlToBookmarks_menu_item5": {
-		"message": "Импорт из файла"
 	},
 	
 	"addUrlToBookmarks_menu_item6": {
@@ -164,14 +160,6 @@
 				"content": "$1"
 			}
 		}
-	},
-	
-	"fileImportSuccess": {
-		"message": "Импорт завершен успешно!"
-	},
-
-	"fileImportError": {
-		"message": "Закладок не найдено! Выберите корректный файл для импорта!"
 	}
 	
 }

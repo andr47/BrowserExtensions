@@ -49,8 +49,6 @@ function createMenu(){
  * @param {Object} tab [Информация о текущей вкладке]
  */
 function addUrlToBookmarks(info, tab){
-	//alert("info: " + JSON.stringify(info));
-	//alert("tab: " + JSON.stringify(tab));
 	switch(info.menuItemId){
 		/**
 		 *	Если нажат пункт меню "Добавить текущую страницу"
@@ -148,44 +146,46 @@ chrome.tabs.onUpdated.addListener(function(id,info,tab){
  */
 function getNotify(){
 	chrome.storage.sync.get(["notifyFlag", "SECRET_KEY"], function (obj) {
-		if(obj.notifyFlag){
-			var params = {
-				SECRET_KEY: obj.SECRET_KEY, 
-				action: serverActions.GET_NOTIFICATIONS,
-				APPID: Options.ThisAppID
-			};
-			
-			$.ajax({
-				type: Options.defaultMethod,
-				url: Options.defaultURL,
-				dataType: 'json',
-				data: {request: JSON.stringify(params)},
-				error: function(jqXHR, textStatus, errorThrown){
-					//alert(chrome.i18n.getMessage("AJAXError"));
-					try {
-						console.error(jqXHR.responseText);
-					} 
-					catch (e) { }
-				},
-				// перед отправкой проверяем есть ли подключение к интернету и если нет, то запрос не произойдет
-				beforeSend: function(jqXHR, settings ){return navigator.onLine;},
-				// обработаем ответ сервера
-				success: function(res){
-					// если код 200, то SECRET_KEY верный и уведомление получено
-					if(res.response.code == Options.response.code.ok){
-						// вывод уведомления
-						var notification = new Notification(res.response.title, {
-							tag : Options.currentNotifyId,
-							icon: 'img/icon/icon-48.png',
-							body: res.response.message
-						});
+		if(obj.SECRET_KEY){
+			if(JSON.parse(obj.notifyFlag) == true){
+				var params = {
+					SECRET_KEY: obj.SECRET_KEY, 
+					action: serverActions.GET_NOTIFICATIONS,
+					APPID: Options.ThisAppID
+				};
+				
+				$.ajax({
+					type: Options.defaultMethod,
+					url: Options.defaultURL,
+					dataType: 'json',
+					data: {request: JSON.stringify(params)},
+					error: function(jqXHR, textStatus, errorThrown){
+						//alert(chrome.i18n.getMessage("AJAXError"));
+						try {
+							console.error(jqXHR.responseText);
+						} 
+						catch (e) { }
+					},
+					// перед отправкой проверяем есть ли подключение к интернету и если нет, то запрос не произойдет
+					beforeSend: function(jqXHR, settings ){return navigator.onLine;},
+					// обработаем ответ сервера
+					success: function(res){
+						// если код 200, то SECRET_KEY верный и уведомление получено
+						if(res.response.code == Options.response.code.ok){
+							// вывод уведомления
+							var notification = new Notification(res.response.title, {
+								tag : Options.currentNotifyId,
+								icon: 'img/icon/icon-48.png',
+								body: res.response.message
+							});
 
-						notification.onclick = function () {
-							chrome.tabs.create({url:Options.baseURL},function(tab){});     
-						};
+							notification.onclick = function () {
+								chrome.tabs.create({url:Options.baseURL},function(tab){});     
+							};
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 	});
 }
@@ -193,12 +193,14 @@ function getNotify(){
 /**
  * По таймеру получаем уведомления с сайта
  */
-chrome.storage.sync.get("notifyInterval", function (obj) {
-	if(obj.notifyInterval){
-		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(obj.notifyInterval)});
+chrome.storage.sync.get(["notifyInterval", "getNotify"], function (obj) {
+	if(obj.notifyInterval && obj.getNotify){
+		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(JSON.parse(obj.notifyInterval))});
 	}
 	else{
-		chrome.alarms.create("getNotify", {periodInMinutes: parseInt(Options.notifyInterval)});
+		chrome.storage.sync.set({"notifyFlag":String(Options.notifyFlag)}, function (flag){
+			chrome.alarms.create("getNotify", {periodInMinutes: Options.notifyInterval});
+		});
 	}
 });
 chrome.alarms.onAlarm.addListener(function(alarm) {

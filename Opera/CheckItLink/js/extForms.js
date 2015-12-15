@@ -63,25 +63,11 @@ var extForms = {
 								'<span class="form-group pull-right">'+
 									'<div class="btn-group dropup">'+
 										'<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-											'<span class="glyphicon glyphicon-cloud-upload"></span> Экспорт <span class="caret"></span>'+
+											'<span class="glyphicon glyphicon-cloud-upload"></span> '+chrome.i18n.getMessage("export")+' <span class="caret"></span>'+
 										'</button>'+
 										'<ul class="dropdown-menu">'+
 										    '<li><a id="addurl-form_go_export_addurl-form" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item2")+'</a></li>'+
 										    '<li><a id="addurl-form_go_export_addurl-file" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item3")+'</a></li>'+
-										'</ul>'+
-									'</div>'+
-								'</span>'+
-
-								'<input type="file" id="fileImport" accept=".html" style="display:none;" />'+
-
-								'<span class="form-group pull-right">'+
-									'<div class="btn-group dropup">'+
-										'<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-											'<span class="glyphicon glyphicon-floppy-open"></span> Импорт <span class="caret"></span>'+
-										'</button>'+
-										'<ul class="dropdown-menu">'+
-										    //'<li><a id="addurl-form_go_import_addurl-form" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item4")+'</a></li>'+
-										    '<li><a id="addurl-form_go_import_addurl-file" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item5")+'</a></li>'+
 										'</ul>'+
 									'</div>'+
 								'</span>'+

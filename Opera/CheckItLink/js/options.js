@@ -68,9 +68,7 @@ var Options = {
 	// ссылка, куда нужно перейти после установки расширения
 	InstallURL: false,
 	// имя файла экспорта закладок
-	ExportFileName: "Opera_Bookmarks_Export.html",
-	// имя папки для импорта закладок
-	ImportFolderName: "Opera Import Bookmarks"
+	ExportFileName: "Opera_Bookmarks_Export.html"
 }
 
 

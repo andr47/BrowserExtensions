@@ -19,156 +19,6 @@ function goExport(toFile){
 	}	
 }
 
-/*
-*	Запускаем импорт
-*/
-function goImport(){
-	var fileInput = document.getElementById('fileImport');
-	var file = fileInput.files[0];
-	if (typeof file == "undefined"){
-		return;
-	}
-
-	var reader = new FileReader();
-	reader.onloadend = function(){
-		ImportBook(reader.result);
-	}
-	reader.readAsText(file);
-}
-
-/*
-*	Функция создает папки для закладок при импорте
-*/
-function addFolder(name,from,to,bookmarks,bookcount,root){
-	chrome.bookmarks.create({title:name,parentId:String(root.id)},function(node)
-	{
-		for (var z=bookmarks.length-1;z>=0;z--)
-		{
-			if (bookmarks[z].index > from && bookmarks[z].index < to)
-			{
-				chrome.bookmarks.create({title:bookmarks[z].title,url:bookmarks[z].url,parentId:node.id},function(){});
-				bookmarks.splice(z,1);
-
-				if (bookmarks.length == 0)
-				{
-					//alert(chrome.i18n.getMessage("fileImportSuccess", bookcount));
-				}
-			}
-		}
-	});
-}
-
-/*
-*	Функция импортирует из файла экспортированные закладки
-*/
-function ImportBook(data){
-	var bookcount = 0;
-	var folders = [ ];
-	var bookmarks = [ ];
-	var closures = [ ];
-
-	// Ищем закладки
-	var regex = /(<dt><a )(.*?)(href=\x22)(.*?)(\x22)(.*?)(>)(.*?)(<\/a>)/ig;
-	var match = regex.exec(data);
-	while (match != null && match.length > 9)
-	{
-		bookcount++;
-		bookmarks.push({"index":match.index,"title":match[8],"url":match[4]});
-		match = regex.exec(data);
-	}
-	// Сортируем
-	bookmarks.sort(function(a,b){ if (a.title>b.title) return -1; if (a.title<b.title) return 1; return 0; });
-
-	// Ищем папки
-	var regex = /(<dt><h3)(.*?)(>)(.*?)(<\/h3>)/ig;
-	var match = regex.exec(data);
-	folders.push({"index":0,"title":"Imported"});
-	while (match != null && match.length > 4)
-	{
-		folders.push({"index":match.index,"title":match[4]});
-		match = regex.exec(data);
-	}
-
-	var regex = /(<\/dl>)|(<dl>)/ig;
-	var match = regex.exec(data);
-	var temp = [ ];
-	while (match != null && match.length > 0)
-	{
-		if (match[0] == "<dl>") { temp.push(match.index); }
-		if (match[0] == "</dl>") { closures.push({"dlstart":temp.pop(),"dlend":match.index}); }
-		match = regex.exec(data);
-	}
-	// Если передан некорректный файл импорта
-	if (temp.length > 0)
-	{
-		alert(chrome.i18n.getMessage("fileImportError"));
-		return;
-	}
-	closures.sort(function(a,b){return b.dlstart - a.dlstart;});
-
-	// Запускаем импорт
-	chrome.bookmarks.search({title:Options.ImportFolderName}, function(search)
-	{
-		//alert(JSON.stringify(search));
-		if(search.length == 0)
-		{
-			chrome.bookmarks.create({title:Options.ImportFolderName}, function(root)
-			{
-				//alert(JSON.stringify(root));
-				for (var x=folders.length-1;x>=0;x--)
-				{
-					for (var y=closures.length-1;y>=0;y--)
-					{
-						if (closures[y].dlstart > folders[x].index)
-						{
-							addFolder(
-									folders[x].title,
-									closures[y].dlstart,
-									closures[y].dlend,
-									bookmarks,
-									bookcount,
-									root
-								);
-							closures.splice(y,1);
-							break;
-						}
-					}
-					folders.pop();
-				}
-				$("#my_chrome_app_spinner").hide();
-				$('#add_url_alert section:last-child').text(chrome.i18n.getMessage("fileImportSuccess"));
-				$("#add_url_alert").removeClass("alert-danger").addClass("alert-success");
-				$("#add_url_alert").show();
-			});
-		}
-		else{
-			for (var x=folders.length-1;x>=0;x--)
-			{
-				for (var y=closures.length-1;y>=0;y--)
-				{
-					if (closures[y].dlstart > folders[x].index)
-					{
-						addFolder(
-								folders[x].title,
-								closures[y].dlstart,
-								closures[y].dlend,
-								bookmarks,
-								bookcount,
-								search[0]
-							);
-						closures.splice(y,1);
-						break;
-					}
-				}
-				folders.pop();
-			}
-			$("#my_chrome_app_spinner").hide();
-			$('#add_url_alert section:last-child').text(chrome.i18n.getMessage("fileImportSuccess"));
-			$("#add_url_alert").removeClass("alert-danger").addClass("alert-success");
-			$("#add_url_alert").show();
-		}
-	});
-}
 
 /*
 *	Функция сохраняет в файл экспортированные закладки
@@ -291,9 +141,6 @@ function ExportBookmarks(toFile)
 *	Функция отправки закладок на сервер
 */
 function SendAllBookmarks(){
-	//alert(JSON.stringify(Options.marks.data, null, '\t'));
-	//alert(JSON.stringify(Options.marks.categories, null, '\t'));
-
 	// делаем экспорт на сервер
 	chrome.storage.sync.get("SECRET_KEY", function (obj){
 		$.ajax({
@@ -532,20 +379,6 @@ function showFormAddURL(){
 		goExport(true);
 	});
 
-	/*
-	*	Вешаем на изменение поля выбора файла обработчик для запуска импорта
-	*/
-	$('#fileImport').on('change', function(){
-		$("#my_chrome_app_spinner").show();
-		goImport();
-	});
-
-	/*
-	*	Вешаем на кнопку "Импорт" обработчик для клика по скрытому пункту выбора файла
-	*/
-	$('#addurl-form_go_import_addurl-file').on('click', function(){
-		$("#fileImport").click();
-	});
 }
 
 /*
