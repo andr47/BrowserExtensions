@@ -4,7 +4,7 @@
 	"name": "__MSG_extension_name__",
 	"short_name": "__MSG_extension_shortname__",
 	"description": "__MSG_extension_description__",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"author": "Ярков Алексей (Yarkov Aleksei) <yarkov_aleksei@mail.ru>",
 	"homepage_url": "https://checkitlink.com",
 	"default_locale": "ru",
@@ -30,7 +30,7 @@
 
 	"permissions": [
 		"ftp://*/*",
-		"https://*/*",
+		"http://*/*",
 		"https://*/*",
 		"contextMenus",
 		"tabs",
@@ -47,6 +47,21 @@
 		"default_icon": "img/icon/icon-16.png",
 		"default_popup": "popup.html"
 	},
+
+	"content_scripts": [
+		{
+			"all_frames": true,
+			"matches": ["http://*/*", "https://*/*"],
+			"js": [
+				"js/jquery.min.js",
+				"js/content.js"
+			],
+			"css": [
+				"css/content.css"
+			],
+			"run_at": "document_end"
+		}
+	],
 
 	"commands": {
 		"_execute_page_action": {

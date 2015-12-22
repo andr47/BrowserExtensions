@@ -116,6 +116,10 @@
 		"message": "Настройки"
 	},
 	
+	"options_page_showButtonCheckbox": {
+		"message": "Показывать кнопку на картинках"
+	},
+	
 	"options_page_NotifyCheckbox": {
 		"message": "Получать уведомления с сайта"
 	},

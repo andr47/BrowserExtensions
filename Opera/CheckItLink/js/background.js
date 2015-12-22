@@ -55,7 +55,10 @@ var Options = {
 	InstallURL: false,
 	// имя файла экспорта закладок
 	ExportFileName: "Opera_Bookmarks_Export.html",
-	PAGEURL: 0
+	// временное хранилище для URL страницы при добавлении изображения
+	PAGEURL: 0,
+	// флаг кнопки "Добавить" на страницах
+	showButton: true
 };
 
 chrome.storage.sync.get("_OPTIONS", function (obj) {
@@ -65,7 +68,7 @@ chrome.storage.sync.get("_OPTIONS", function (obj) {
 	else{
 		JSOptions = new JSOptions(Options);
 	}
-
+	//alert(JSON.stringify(JSOptions.getItem("showButton")));
 	/**
 	 * Устанавливаем ссылку, которая откроется после удаления расширения
 	 */
@@ -140,7 +143,7 @@ function addUrlToBookmarks(info, tab){
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(t.url)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
-							"window", 
+							"popup", 
 							"width=600,height=600,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
@@ -161,7 +164,7 @@ function addUrlToBookmarks(info, tab){
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(t.url)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
-							"window", 
+							"popup", 
 							"width=600,height=600,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
@@ -182,7 +185,7 @@ function addUrlToBookmarks(info, tab){
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(info.srcUrl)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
-							"window", 
+							"popup", 
 							"width=600,height=500,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
@@ -203,7 +206,7 @@ function addUrlToBookmarks(info, tab){
 					chrome.storage.sync.set({"TITLE": String(info.pageUrl), "URL": String(info.linkUrl)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
-							"window", 
+							"popup", 
 							"width=600,height=600,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
@@ -311,6 +314,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
  * Устанавливаем ссылку, которая откроется после установки расширения
  */
 chrome.runtime.onInstalled.addListener(function(details){
+	chrome.runtime.openOptionsPage();
 	/**
 	 * При установке сохраним APPID расширения
 	 */
@@ -364,6 +368,16 @@ chrome.storage.onChanged.addListener(function(changes, namespace){
 		catch (e) {
 			JSOptions.setItem(key, storageChange.newValue);
 		}
+		// если была отключена кнопка в настройках
+		if(key == "showButton"){
+			var info = {
+				"sender": "backgroundScript",
+				"status": 1,
+				"showButton": JSON.parse(storageChange.newValue)
+			}
+			// то отправим в content.js сигнал, что кнопку надо скрыть
+			sendMessageToContentScript(info);
+		}
 	}
 });
 
@@ -383,7 +397,7 @@ chrome.runtime.onSuspend.addListener(function() {
 
 /**
  * Обработчик команд при использовании хоткеев.
- * Пока хоткей только 1 - Ctrl+Shift+S (вызов окна расширения)
+ * Пока хоткей только 1 - Ctrl+Shift+A (вызов окна расширения)
  * Но на будущее пусть будет ))
  */
 chrome.commands.onCommand.addListener(function(command) {
@@ -391,3 +405,53 @@ chrome.commands.onCommand.addListener(function(command) {
 		alert('Keyboard shortcut from extension worked!');
 	}
 });
+
+
+function ListenButtonOnPage(imgInfo){
+	/*#TODO*/
+	//alert(JSON.stringify(imgInfo));
+	var top = String(imgInfo.windowSize.height / 2 - 250);
+	var left = String(imgInfo.windowSize.width / 2 - 300);
+	JSOptions.setItem("PAGEURL", imgInfo.pageUrl);
+	chrome.storage.sync.set({"TITLE": imgInfo.pageTitle, "URL": imgInfo.srcUrl}, function(){
+		var newWin = window.open(
+			chrome.extension.getURL('popup.html'), 
+			"popup", 
+			"width=600,height=500,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
+		);
+		newWin.focus();
+	});
+
+	var Info = {
+		"sender": "backgroundScript",
+		"status": 1
+	}
+
+	sendMessageToContentScript(Info);
+
+}
+
+/**
+ * Слушаем сообщения от content.js
+ */
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse){
+	if (msg.sender == 'contentScript'){
+		if (msg.action == 'ADDIMAGE'){
+			ListenButtonOnPage(msg);
+		}
+		if (msg.action == 'GETOPTIONS'){
+			var params = {
+				"sender": "backgroundScript",
+				"status": 1,
+				"opts": JSOptions.get()
+			}
+			sendMessageToContentScript(params);
+		}
+	}
+});
+
+function sendMessageToContentScript(params){
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+		chrome.tabs.sendMessage(tabs[0].id, params, function(response) {});
+	});
+}

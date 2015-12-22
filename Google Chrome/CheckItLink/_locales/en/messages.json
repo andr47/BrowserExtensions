@@ -116,6 +116,10 @@
 		"message": "Settings"
 	},
 	
+	"options_page_showButtonCheckbox": {
+		"message": "Show button on images"
+	},
+	
 	"options_page_NotifyCheckbox": {
 		"message": "Get notifycations from website"
 	},

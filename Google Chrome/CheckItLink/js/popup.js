@@ -792,7 +792,7 @@ $(document).ready(function(){
 			*	Обработаем неизвестный action на всякий случай
 			*/
 			default:
-				alert(msg.action+', '+chrome.i18n.getMessage("error_action"));
+				//alert(msg.action+', '+chrome.i18n.getMessage("error_action"));
 				break;
 		}
 	});
