@@ -80,28 +80,29 @@ $(document).ready(function(){
 		CheckItLinkClick();
 	});
 
-	$("img")
-		.on("mouseover", function(){
-			CURRENT_IMAGE = this;
-			var pos = getOffset(this);
-			var width = $(this).width();
-			var height = $(this).height();
-			var top = (pos.top+5);
-			var left = (pos.left+5);
+	$('body').on("mouseover", function(){
+		$("img")
+			.on("mouseover", function(){
+				CURRENT_IMAGE = this;
+				var pos = getOffset(this);
+				var width = $(this).width();
+				var height = $(this).height();
+				var top = (pos.top+5);
+				var left = (pos.left+5);
 
-			// если картинка меньше минимальных настроек, то не обрабатываем наведение курсора
-			if(width < minw || height < minh) return false;
+				// если картинка меньше минимальных настроек, то не обрабатываем наведение курсора
+				if(width < minw || height < minh) return false;
 
-			$("#CheckItLink_Button")
-				.css({"top": top, "left": left})
-				.animate({opacity:'show'}, 300);
-		})
-		.on("mouseleave", function(){
-			$("#CheckItLink_Button")
-				.animate({opacity:'hide'}, 200)
-				.stop(true, true);
-		});
-
+				$("#CheckItLink_Button")
+					.css({"top": top, "left": left})
+					.animate({opacity:'show'}, 300);
+			})
+			.on("mouseleave", function(){
+				$("#CheckItLink_Button")
+					.animate({opacity:'hide'}, 200)
+					.stop(true, true);
+			});
+	});
 });
 
 $(window).on('load resize', function(){
