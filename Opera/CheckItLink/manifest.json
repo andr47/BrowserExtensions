@@ -25,7 +25,7 @@
 			"js/extForms.js", 
 			"js/background.js"
 		],
-		"persistent": false
+		"persistent": true
 	},
 
 	"permissions": [
@@ -54,6 +54,7 @@
 			"matches": ["http://*/*", "https://*/*"],
 			"js": [
 				"js/jquery.min.js",
+				"js/lib.js",
 				"js/content.js"
 			],
 			"css": [
@@ -66,7 +67,7 @@
 	"commands": {
 		"_execute_page_action": {
 			"suggested_key": {
-				"windows": "Ctrl+Shift+A",
+				"default": "Ctrl+Shift+A",
 				"mac": "Command+Shift+A"
 			}
 		}

@@ -18,24 +18,28 @@ var extForms = {
 						'</div>'+
 
 						'<div class="row" id="urlcategoridiv">'+
-							'<div class="col-xs-8">'+
-								'<label class="pull-left">'+chrome.i18n.getMessage("addurl_formurl")+':</label>'+
-								'<input type="text" class="form-control" name="url" id="addurl-form_url">'+
-
+							'<div class="col-xs-7">'+
+								'<label class="pull-left" style="display: none;">'+chrome.i18n.getMessage("addurl_formurl")+':</label>'+
+								'<input type="hidden" class="form-control" name="url" id="addurl-form_url">'+
 								'<input type="hidden" name="pageurl" id="addurl-form_pageurl" value="">'+
-
+								/********/
+								'<label class="pull-left">'+chrome.i18n.getMessage("addurl_formtitle")+':</label>'+
+								'<input type="text" class="form-control" name="title" id="addurl-form_title">'+
+								/********/
 							'</div>'+
-							'<div class="col-xs-4">'+
+							'<div class="col-xs-5">'+
 								'<label class="pull-left">'+chrome.i18n.getMessage("addurl_formcategori_id")+':</label>'+
 								'<select class="form-control" name="categori_id" id="addurl-form_categori_id"></select>'+
 							'</div>'+
 						'</div>'+
 
 						'<div class="row" id="titlediv">'+
+							/*
 							'<div class="col-xs-12">'+
 								'<label class="pull-left">'+chrome.i18n.getMessage("addurl_formtitle")+':</label>'+
 								'<input type="text" class="form-control" name="title" id="addurl-form_title">'+
 							'</div>'+
+							*/
 						'</div>'+
 
 						'<div class="row">'+
@@ -62,18 +66,24 @@ var extForms = {
 						'<br><div class="row">'+
 							'<div class="col-xs-12">'+
 								'<button type="button" class="btn btn-success pull-left" name="submit_addurl" id="addurl-form_submit_addurl-form"><span class="glyphicon glyphicon-pushpin"></span> '+chrome.i18n.getMessage("addurl_formsubmit")+'</button>'+
-
+								/*
 								'<span class="form-group pull-right">'+
 									'<div class="btn-group dropup">'+
 										'<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
 											'<span class="glyphicon glyphicon-cloud-upload"></span> '+chrome.i18n.getMessage("export")+' <span class="caret"></span>'+
 										'</button>'+
+										
 										'<ul class="dropdown-menu">'+
 										    '<li><a id="addurl-form_go_export_addurl-form" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item2")+'</a></li>'+
 										    '<li><a id="addurl-form_go_export_addurl-file" href="#">'+chrome.i18n.getMessage("addUrlToBookmarks_menu_item3")+'</a></li>'+
 										'</ul>'+
+										
 									'</div>'+
 								'</span>'+
+								*/
+								/*********/
+								'<button type="button" class="btn btn-info pull-right" id="addurl-form_go_export_addurl-form"><span class="glyphicon glyphicon-cloud-upload"></span> '+chrome.i18n.getMessage("addUrlToBookmarks_menu_item2")+'</button>'+
+								/*********/
 
 							'</div>'+
 						'</div>'+

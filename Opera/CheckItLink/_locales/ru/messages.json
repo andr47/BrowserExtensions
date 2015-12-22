@@ -168,6 +168,35 @@
 				"content": "$1"
 			}
 		}
+	},
+
+	"buttonOK": {
+		"message": "OK"
+	},
+
+	"buttonCANCEL": {
+		"message": "Отмена"
+	},
+
+	"buttonYES": {
+		"message": "Да"
+	},
+
+	"buttonNO": {
+		"message": "Нет"
+	},
+
+	"confirm_export_title": {
+		"message": "Подтвердите действие"
+	},
+
+	"confirm_export_to_website_message": {
+		"message": "Вы правда хотите экспортировать закладки на сайт?"
+	},
+
+	"confirm_export_to_file_message": {
+		"message": "Вы правда хотите экспортировать закладки в HTML файл?"
 	}
+
 	
 }

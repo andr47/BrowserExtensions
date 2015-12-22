@@ -137,14 +137,14 @@ function addUrlToBookmarks(info, tab){
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
 					var height, width;
-					var top = String(w.height / 2 - 300);
+					var top = String(w.height / 2 - 250);
 					var left = String(w.width / 2 - 300);
 					JSOptions.setItem("PAGEURL", 0);
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(t.url)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
 							"popup", 
-							"width=600,height=600,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
+							"width=600,height=500,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
 					});
@@ -158,7 +158,7 @@ function addUrlToBookmarks(info, tab){
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
 					var height, width;
-					var top = String(w.height / 2 - 300);
+					var top = String(w.height / 2 - 250);
 					var left = String(w.width / 2 - 300);
 					JSOptions.setItem("PAGEURL", 0);
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(t.url)}, function(){
@@ -200,14 +200,14 @@ function addUrlToBookmarks(info, tab){
 			chrome.windows.getCurrent(function(w){
 				chrome.tabs.getSelected(w.id,function(t){
 					var height, width;
-					var top = String(w.height / 2 - 300);
+					var top = String(w.height / 2 - 250);
 					var left = String(w.width / 2 - 300);
 					JSOptions.setItem("PAGEURL", 0);
 					chrome.storage.sync.set({"TITLE": String(info.pageUrl), "URL": String(info.linkUrl)}, function(){
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
 							"popup", 
-							"width=600,height=600,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
+							"width=600,height=500,top="+top+",left="+left+",status=no,scrollbars=yes,resizable=no"
 						);
 						newWin.focus();
 					});
@@ -304,9 +304,32 @@ chrome.storage.sync.get(["notifyInterval", "notifyFlag"], function (obj) {
 		});
 	}
 });
+
+/**
+ * Функция сохраняет текущие настройки в хранилище, чтобы при последующем запуске расширения подгрузить их оттуда, а не грузить дефолтные.
+ */
+function SaveOptions() {
+	var opts = JSOptions.get();
+	opts.marks = Options.marks;
+	chrome.storage.sync.set({"_OPTIONS": JSON.stringify(opts)}, function(obj){});
+}
+
+/**
+ * Раз в минуту сохраняем настройки. Сделано для того, чтоб не выгружать фоновую страницу.
+ */
+chrome.alarms.create("SaveOptions", {periodInMinutes: 1});
+
+/**
+ * Слушаем наши таймеры
+ */
 chrome.alarms.onAlarm.addListener(function(alarm) {
-	if(alarm.name == "getNotify"){
-		getNotify();
+	switch(alarm.name){
+		case "getNotify":
+			getNotify();
+			break;
+		case "SaveOptions":
+			SaveOptions();
+			break;
 	}
 });
 
@@ -361,6 +384,9 @@ chrome.runtime.onInstalled.addListener(function(details){
  */
 chrome.storage.onChanged.addListener(function(changes, namespace){
 	for (key in changes){
+		if(key == "_OPTIONS"){
+			break;
+		}
 		var storageChange = changes[key];
 		try {
 			JSOptions.setItem(key, JSON.parse(storageChange.newValue));
@@ -379,20 +405,6 @@ chrome.storage.onChanged.addListener(function(changes, namespace){
 			sendMessageToContentScript(info);
 		}
 	}
-});
-
-/**
- * Обработчик закрытия расширения
- */
-chrome.runtime.onSuspend.addListener(function() {
-	var opts = JSOptions.get();
-	opts.marks = Options.marks;
-	chrome.storage.sync.set(
-		{
-			"_OPTIONS": JSON.stringify(opts)
-		}, 
-		function (obj){}
-	);
 });
 
 /**

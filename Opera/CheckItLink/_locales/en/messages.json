@@ -168,6 +168,35 @@
 				"content": "$1"
 			}
 		}
+	},
+
+	"buttonOK": {
+		"message": "OK"
+	},
+
+	"buttonCANCEL": {
+		"message": "Cancel"
+	},
+
+	"buttonYES": {
+		"message": "Yes"
+	},
+
+	"buttonNO": {
+		"message": "No"
+	},
+
+	"confirm_export_title": {
+		"message": "Confirm action"
+	},
+
+	"confirm_export_to_website_message": {
+		"message": "Do you really want to export bookmarks to the site?"
+	},
+
+	"confirm_export_to_file_message": {
+		"message": "Do you really want to export bookmarks to the file?"
 	}
+
 	
 }

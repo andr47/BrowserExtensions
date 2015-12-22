@@ -215,9 +215,12 @@ function showFormAddURL(){
 	$('#form_container section:last-child').children().remove();
 	$('#form_container section:last-child').append(extForms.addUrlForm.html);
 	
+	/**
+	 * Если окно открыто для добавления изображения
+	 */
 	if(JSOptions.getItem("PAGEURL") != 0){
 		$('#addurl-form_pageurl').val(JSOptions.getItem("PAGEURL"));
-		$('#urlcategoridiv, #titlediv').hide();
+		$('#urlcategoridiv, #titlediv, #addurl-form_go_export_addurl-form').hide();
 		JSOptions.setItem("PAGEURL", 0);
 	}
 	
@@ -486,12 +489,20 @@ function showFormAddURL(){
 	*	Вешаем на кнопки "Экспорт" обработчики для запуска экспорта
 	*/
 	$('#addurl-form_go_export_addurl-form').on('click', function(){
-		$("#my_chrome_app_spinner").show();
-		goExport();
+		jConfirm(chrome.i18n.getMessage("confirm_export_to_website_message"), chrome.i18n.getMessage("confirm_export_title"), function(r) {
+			if(r){
+				$("#my_chrome_app_spinner").show();
+				goExport();
+			}
+		});
 	});
 	$('#addurl-form_go_export_addurl-file').on('click', function(){
-		$("#my_chrome_app_spinner").show();
-		goExport(true);
+		jConfirm(chrome.i18n.getMessage("confirm_export_to_file_message"), chrome.i18n.getMessage("confirm_export_title"), function(r) {
+			if(r){
+				$("#my_chrome_app_spinner").show();
+				goExport(true);
+			}
+		});
 	});
 
 }
