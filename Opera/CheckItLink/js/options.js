@@ -4,7 +4,8 @@ var JSOptions;
 function save_options() {
   	var min = JSOptions.getItem("notifyIntervalMin");
 	var max = JSOptions.getItem("notifyIntervalMax");
-	var val = JSON.parse($('#NotifyIntervalInput').val());
+	//var val = JSON.parse($('#NotifyIntervalInput').val());
+	var val = $('#NotifyIntervalInput').val();
 	var re = new RegExp(/^[1-9][0-9]?/i);
 	if(!re.test(val)){
 		val = JSOptions.getItem("notifyInterval");
