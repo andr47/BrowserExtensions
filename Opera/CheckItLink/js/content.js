@@ -80,8 +80,8 @@ $(document).ready(function(){
 		CheckItLinkClick();
 	});
 
-	$("img")
-		.on("mouseover", function(){
+	$('body')
+		.on("mouseenter", 'img', function(){
 			CURRENT_IMAGE = this;
 			var pos = getOffset(this);
 			var width = $(this).width();
@@ -91,17 +91,19 @@ $(document).ready(function(){
 
 			// если картинка меньше минимальных настроек, то не обрабатываем наведение курсора
 			if(width < minw || height < minh) return false;
-
-			$("#CheckItLink_Button")
-				.css({"top": top, "left": left})
-				.animate({opacity:'show'}, 300);
-		})
-		.on("mouseleave", function(){
+			// Проверка настройки
+			if(JSOptions.showButton){
+				$("#CheckItLink_Button")
+					.css({"top": top, "left": left})
+					.animate({opacity:'show'}, 300);
+			}
+		});
+	$('body')
+		.on("mouseleave", 'img', function(){
 			$("#CheckItLink_Button")
 				.animate({opacity:'hide'}, 200)
 				.stop(true, true);
 		});
-
 });
 
 $(window).on('load resize', function(){
