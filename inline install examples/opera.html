@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+ 
+ 	<!-- Кнопка установки -->
+    <button id="opera_extension_inline_install_button">Установить расширение для Opera</button>
+    <!-- // -->
+
+    <!-- Скрипт установки и проверки -->
+    <script type="text/javascript">
+		var id = 'ID расширения в каталоге Opera';
+		var myExtensionButton = document.querySelector('#opera_extension_inline_install_button');
+		myExtensionButton.addEventListener('click', function(event) {
+			opr.addons.installExtension(
+				id, 
+				function () {
+					myExtensionButton.style.display = 'none';
+					console.log('Success install!');
+				}, 
+				function (errorMessage) {
+					console.log('Error install: ' + errorMessage)
+				}
+			);
+		}, true);
+    </script>
+    <!-- // -->
+
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+ 
+ 	<!-- Кнопка установки -->
+    <button id="chrome_extension_inline_install_button">Установить расширение для Chrome</button>
+    <!-- // -->
+	
+	<!-- Скрипт установки и проверки -->
+	<script type="text/javascript">
+		var url = "https://chrome.google.com/webstore/detail/{ID РАСШИРЕНИЯ В КАТАЛОГЕ CHROME}";
+		var myExtensionButton = document.querySelector('#chrome_extension_inline_install_button');
+		myExtensionButton.addEventListener('click', function(event) {
+			chrome.webstore.install(
+				url, 
+				function () {
+					myExtensionButton.style.display = 'none';
+					console.log('Success install!');
+				}, 
+				function (errorMessage) {
+					console.log('Error install: ' + errorMessage)
+				}
+			);
+		});
+	</script>
+	<!-- // -->
+    
+
+    </body>
+</html>
