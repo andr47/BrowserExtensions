@@ -48,22 +48,6 @@
 		"default_popup": "popup.html"
 	},
 
-	"content_scripts": [
-		{
-			"all_frames": true,
-			"matches": ["http://*/*", "https://*/*"],
-			"js": [
-				"js/jquery.min.js",
-				"js/lib.js",
-				"js/content.js"
-			],
-			"css": [
-				"css/content.css"
-			],
-			"run_at": "document_end"
-		}
-	],
-
 	"commands": {
 		"_execute_page_action": {
 			"suggested_key": {

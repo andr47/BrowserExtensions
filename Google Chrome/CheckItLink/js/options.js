@@ -17,22 +17,22 @@ function save_options() {
 	chrome.storage.sync.set(
 		{
 			"notifyInterval": String(val), 
-			"notifyFlag": String($('#NotifyCheckbox').prop("checked")),
-			"showButton": String($('#showButtonCheckbox').prop("checked"))
+			"notifyFlag": String($('#NotifyCheckbox').prop("checked"))/*,
+			"showButton": String($('#showButtonCheckbox').prop("checked"))*/
 		}, function(opts){
 		JSOptions.setItem("notifyInterval", JSON.parse(val));
 		JSOptions.setItem("notifyFlag", JSON.parse($('#NotifyCheckbox').prop("checked")));
-		JSOptions.setItem("showButton", JSON.parse($('#showButtonCheckbox').prop("checked")));
+		/*JSOptions.setItem("showButton", JSON.parse($('#showButtonCheckbox').prop("checked")));*/
 		chrome.alarms.clear("getNotify");
 		chrome.alarms.create("getNotify", {periodInMinutes: JSOptions.getItem("notifyInterval")});
 	});
 }
 
 function restore_options() {
-	chrome.storage.sync.get(["notifyInterval", "notifyFlag", "showButton"], function (obj) {
+	chrome.storage.sync.get(["notifyInterval", "notifyFlag"/*, "showButton"*/], function (obj) {
 		var interval;
 		var checked;
-		var showButton;
+		/*var showButton;*/
 
 		if(obj.notifyInterval){
 			interval = JSON.parse(obj.notifyInterval);
@@ -58,7 +58,7 @@ function restore_options() {
 			});
 		}
 
-		if(obj.showButton){
+		/*if(obj.showButton){
 			showButton = JSON.parse(obj.showButton);
 			$('#showButtonCheckbox').prop("checked", showButton);
 		}
@@ -68,7 +68,7 @@ function restore_options() {
 			chrome.storage.sync.set({"showButton": String(showButton)}, function(opt){
 				JSOptions.setItem("showButton", JSON.parse(showButton));
 			});
-		}
+		}*/
 	});
 }
 
@@ -88,7 +88,7 @@ $(document).ready(function(){
 		//alert(JSON.stringify(JSOptions.get()));
 		$('#NotifyIntervalInput').attr({"min": String(JSOptions.getItem("notifyIntervalMin"))});
 		$('#NotifyIntervalInput').attr({"max": String(JSOptions.getItem("notifyIntervalMax"))});
-		$('#options_page_showButtonCheckbox').text(chrome.i18n.getMessage("options_page_showButtonCheckbox"));
+		/*$('#options_page_showButtonCheckbox').text(chrome.i18n.getMessage("options_page_showButtonCheckbox"));*/
 		$('#options_page_NotifyCheckbox').text(chrome.i18n.getMessage("options_page_NotifyCheckbox"));
 		$('#options_page_NotifyIntervalInput').text(chrome.i18n.getMessage("options_page_NotifyIntervalInput"));
 		$('#options_page_button_save_options_text').text(chrome.i18n.getMessage("options_page_button_save_options"));

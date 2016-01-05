@@ -1,5 +1,6 @@
 // background.js
 //QaFQnlXXB10tdhzNRmicdYtarpDnG67n6D6kRS7jHYEM66pNjy
+//7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt
 var JSOptions;
 
 /**
@@ -30,7 +31,7 @@ var Options = {
 	// url страницы пожертвования
 	donateURL: 'https://checkitlink.com/donate.html',
 	// url страницы справки (можно поменять на страницу на сайте)
-	aboutURL: 'https://checkitlink.com/index.php?r=site/faq',
+	aboutURL: 'https://checkitlink.com/main/info',
 	// хранилище для хэштегов полученных с сервера
 	hashtags: [],
 	// хранилище для категорий полученных с сервера
@@ -46,7 +47,7 @@ var Options = {
 	// url обработчика запросов
 	// http://ok.freelanceronline.ru/checkitlink.php
 	// https://checkitlink.com/index.php?r=newlink/index
-	defaultURL: 'https://checkitlink.com/index.php?r=newlink/index',
+	defaultURL: 'https://checkitlink.com/browser/addlink',
 	// метод отправки запросов к обработчику
 	defaultMethod: 'POST',
 	// ссылка, куда нужно перейти после удаления расширения
@@ -68,7 +69,6 @@ chrome.storage.sync.get("_OPTIONS", function (obj) {
 	else{
 		JSOptions = new JSOptions(Options);
 	}
-	//alert(JSON.stringify(JSOptions.getItem("showButton")));
 	/**
 	 * Устанавливаем ссылку, которая откроется после удаления расширения
 	 */
@@ -141,6 +141,21 @@ function addUrlToBookmarks(info, tab){
 					var left = String(w.width / 2 - 300);
 					JSOptions.setItem("PAGEURL", 0);
 					chrome.storage.sync.set({"TITLE": String(t.title), "URL": String(t.url)}, function(){
+						/*
+						chrome.windows.create(
+							{ 
+								url: chrome.extension.getURL('popup.html'), 
+								type: 'popup', 
+								width: 600, 
+								height: 500, 
+								top: parseInt(top), 
+								left: parseInt(left),
+								focused: true
+							}, 
+							function() { chrome.runtime.sendMessage({ details: "details" }, 
+							function(response) {});
+						});
+						*/
 						var newWin = window.open(
 							chrome.extension.getURL('popup.html'), 
 							"popup", 
@@ -395,7 +410,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace){
 			JSOptions.setItem(key, storageChange.newValue);
 		}
 		// если была отключена кнопка в настройках
-		if(key == "showButton"){
+		/*--CONTENTSCRIPT--*/
+		/*if(key == "showButton"){
 			var info = {
 				"sender": "backgroundScript",
 				"status": 1,
@@ -403,7 +419,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace){
 			}
 			// то отправим в content.js сигнал, что кнопку надо скрыть
 			sendMessageToContentScript(info);
-		}
+		}*/
 	}
 });
 
