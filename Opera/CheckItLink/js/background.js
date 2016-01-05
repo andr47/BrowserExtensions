@@ -1,6 +1,5 @@
 // background.js
-//QaFQnlXXB10tdhzNRmicdYtarpDnG67n6D6kRS7jHYEM66pNjy
-//7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt
+
 var JSOptions;
 
 /**
@@ -45,8 +44,6 @@ var Options = {
 	// запрос уведомлений максимум каждые N минут (1440 минут == сутки)
 	notifyIntervalMax: 1440,
 	// url обработчика запросов
-	// http://ok.freelanceronline.ru/checkitlink.php
-	// https://checkitlink.com/index.php?r=newlink/index
 	defaultURL: 'https://checkitlink.com/browser/addlink',
 	// метод отправки запросов к обработчику
 	defaultMethod: 'POST',
