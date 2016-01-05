@@ -5,7 +5,7 @@ var JSOptions;
 
 
 /**
- * Функция вставляет текст в DOM елемент. Привет ребятам оз Opera
+ * Функция вставляет текст в DOM елемент. Привет ребятам из Opera
  * @param {string} root [Селектор ID элемента]
  * @param {string} data [Строка с текстом для вставки]
  */
@@ -233,7 +233,7 @@ function showFormAddURL(){
 	*	Здесь надо послать запрос серверу для получения списка категорий и вставить список в форму
 	*/
 	chrome.storage.sync.get("SECRET_KEY", function (obj) {
-		if(JSOptions.getItem("categories").length == 0){
+		/*if(JSOptions.getItem("categories").length == 0){*/
 			$.ajax({
 				type: JSOptions.getItem("defaultMethod"),
 				url: JSOptions.getItem("defaultURL"),
@@ -264,7 +264,7 @@ function showFormAddURL(){
 					}
 				}
 			});
-		}
+		/*}
 		else{
 			var html = '';
 			$('#addurl-form_categori_id').children().remove();
@@ -272,12 +272,12 @@ function showFormAddURL(){
 				html += '<option value="'+val.id+'">'+val.cat_name+'</option>';
 			});
 			$('#addurl-form_categori_id').append(html);
-		}
+		}*/
 
 		/*
 		*	Здесь надо послать запрос серверу для получения списка хэштегов и вставить список в Options.hashtags
 		*/
-		if(JSOptions.getItem("hashtags").length == 0){
+		/*if(JSOptions.getItem("hashtags").length == 0){*/
 			$.ajax({
 				type: JSOptions.getItem("defaultMethod"),
 				url: JSOptions.getItem("defaultURL"),
@@ -331,7 +331,7 @@ function showFormAddURL(){
 					}
 				}
 			});
-		}
+		/*}
 		else{
 			$('#addurl-form_hashtag').meta_input(
 				{
@@ -342,7 +342,7 @@ function showFormAddURL(){
 					selectPlaceholder: "Input hashtag"
 				}
 			);
-		}
+		}*/
 
 
 		/*
