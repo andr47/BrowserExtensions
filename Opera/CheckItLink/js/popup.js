@@ -3,21 +3,6 @@
 // тут будем хранить настройки
 var JSOptions;
 
-
-/**
- * Функция вставляет текст в DOM елемент. Привет ребятам из Opera
- * @param {string} root [Селектор ID элемента]
- * @param {string} data [Строка с текстом для вставки]
- */
-function setTextNode(root, data){
-	var frag = document.createDocumentFragment();
-	var target = document.querySelector(root);
-	var child = document.createTextNode(data);
-	target.innerText = '';
-	frag.appendChild(child);
-	target.appendChild(frag);
-}
-
 /*
 *	Функция отправляет сообщения в content.js с параметром params, который содержит объект
 */
@@ -208,6 +193,14 @@ function SendAllBookmarks(){
 	});
 }
 
+/**
+ * Thank you, Opera )))
+*/ 
+function strip_html(html){
+	var re = /(<([^>]+)>)/ig;
+	return(html.replace(re, ""));
+}
+
 /*
 *	Функция открытия формы добавления ссылки
 */
@@ -258,6 +251,8 @@ function showFormAddURL(){
 						$('#addurl-form_categori_id').children().remove();
 						JSOptions.setItem("categories", res.response.categories);
 						$.each(JSOptions.getItem("categories"), function(i, val){
+							val.id = strip_html(val.id);
+							val.cat_name = strip_html(val.cat_name);
 							html += '<option value="'+val.id+'">'+val.cat_name+'</option>';
 						});
 						$('#addurl-form_categori_id').append(html);
@@ -269,6 +264,8 @@ function showFormAddURL(){
 			var html = '';
 			$('#addurl-form_categori_id').children().remove();
 			$.each(JSOptions.getItem("categories"), function(i, val){
+				val.id = strip_html(val.id);
+				val.cat_name = strip_html(val.cat_name);
 				html += '<option value="'+val.id+'">'+val.cat_name+'</option>';
 			});
 			$('#addurl-form_categori_id').append(html);
