@@ -251,7 +251,7 @@ function showFormAddURL(){
 						$('#addurl-form_categori_id').children().remove();
 						JSOptions.setItem("categories", res.response.categories);
 						$.each(JSOptions.getItem("categories"), function(i, val){
-							val.id = strip_html(val.id);
+							val.id = strip_html(""+val.id);
 							val.cat_name = strip_html(val.cat_name);
 							html += '<option value="'+val.id+'">'+val.cat_name+'</option>';
 						});
@@ -264,7 +264,7 @@ function showFormAddURL(){
 			var html = '';
 			$('#addurl-form_categori_id').children().remove();
 			$.each(JSOptions.getItem("categories"), function(i, val){
-				val.id = strip_html(val.id);
+				val.id = strip_html(""+val.id);
 				val.cat_name = strip_html(val.cat_name);
 				html += '<option value="'+val.id+'">'+val.cat_name+'</option>';
 			});
