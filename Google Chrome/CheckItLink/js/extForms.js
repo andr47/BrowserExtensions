@@ -112,6 +112,9 @@ var extForms = {
 							'<input type="password" class="form-control" name="SECRET_KEY" id="secret_key-form_SECRET_KEY">'+
 							'<span id="show_password" title="'+chrome.i18n.getMessage("secret_key_formshow_password")+'"><span class="glyphicon glyphicon-eye-open"></span></span>'+
 						'</div>'+
+						'<div class="form-group pull-left">'+
+							'Нет аккаунта? <a target="_blank" href="https://checkitlink.com/main/reg">Зарегистрируйтесь!</a>'+
+						'</div>'+
 						'<div class="form-group pull-right">'+
 							'<button type="button" class="btn btn-success" name="submit_secretkey" id="secret_key-form_submit_secret_key-form"><span class="glyphicon glyphicon-user"></span> '+chrome.i18n.getMessage("secret_key_formsubmit")+'</button>'+
 						'</div>'+
