@@ -1,15 +1,15 @@
 {
 
 	"extension_description": {
-		"message": "Теперь хранить свои закладки стало еще проще!"
+		"message": "Теперь хранить свои закладки стало еще проще! Установите бесплатно для браузера Opera, и сохраняйте закладки в 1 клик!"
 	},
 	
 	"extension_name": {
-		"message": "CheckItLink"
+		"message": "CheckitLink.com - расширение для Opera"
 	},
 
 	"extension_shortname": {
-		"message": "CheckItLink"
+		"message": "CheckitLink"
 	},
 	
 	"export": {
@@ -97,7 +97,7 @@
 	},
 	
 	"secret_key_formSECRET_KEY": {
-		"message": "Введите свой SECRET_KEY"
+		"message": "Введите свой секретный ключ (он находится в <a target='_blank' href='https://checkitlink.com/main/profile'>профиле</a>)"
 	},
 	
 	"secret_key_formshow_password": {
@@ -158,7 +158,7 @@
 	},
 
 	"change_key_button_title": {
-		"message": "Сменить SECRET_KEY"
+		"message": "Сменить секретный ключ"
 	},
 	
 	"fileExportSuccess": {
