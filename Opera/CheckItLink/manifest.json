@@ -4,7 +4,7 @@
 	"name": "__MSG_extension_name__",
 	"short_name": "__MSG_extension_shortname__",
 	"description": "__MSG_extension_description__",
-	"version": "1.6.1",
+	"version": "1.6.1.1",
 	"author": "Ярков Алексей (Yarkov Aleksei) <yarkov_aleksei@mail.ru>",
 	"homepage_url": "https://checkitlink.com",
 	"default_locale": "ru",
