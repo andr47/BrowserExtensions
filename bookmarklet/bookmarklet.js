@@ -1,64 +1,49 @@
 // с помощью NODEjs и плагина uglify сжимать файл командой:
 // 									имя сжатого файла | имя входного файла
-// uglifyjs --compress --mangle --o bookmarklet.min.js bookmarklet.js
+// uglifyjs --compress --o bookmarklet.min.js bookmarklet.js
 // 
 // Содержимое сжатого файла вставить в ссылку по образцу как в файле test.html
 // ВСЕ ДВОЙНЫЕ КАВЫЧКИ В КОДЕ bookmarklet.min.js ЗАМЕНИТЬ НА ОДИНАРНЫЕ!!!!!
 function addBookmarkInCheckitLink() {
+	// создаем iframe
+	var CHECKITLINK_WIN_IFRAME = document.createElement("iframe");
+	// установим адрес нашей страницы
+	CHECKITLINK_WIN_IFRAME.src = "https://checkitlink.com/testapi.php";
+	// установим имя фрейма (потом будем по нему обращаться)
+	CHECKITLINK_WIN_IFRAME.name = "CHECKITLINK";
+	// установим функцию, которая выполнится после загрузки фрейма
+	CHECKITLINK_WIN_IFRAME.onload = timeoutLoad;
+	// и размер 0, чтоб не отображался на странице
+	CHECKITLINK_WIN_IFRAME.width = 0;
+	CHECKITLINK_WIN_IFRAME.height = 0;
 	// формируем данные для отправки
-	var data = {
-		type: "POST",
-		url: "https://checkitlink.com/browser/addlink",
-		dataType: 'json',
-		data: {
-			request: JSON.stringify(
-				{
+	var LINK_DATA_OBJECT = null;
+	LINK_DATA_OBJECT = {
 					// генерируем PHP кодом на странице пользователя
 					SECRET_KEY: "7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt", 
+					// ну про action и говорить не стоит ))
 					action: "ADDURL", 
+					// APPID для идентификации. Можно генерить сюда SECRET_KEY и отслеживать статистику
 					APPID: "bookmarklet",
 					// собственно данные ссылки
-					// я хз как лучше сделать
-					// рисовать окошко для ввода не вариант, ибо опять всплывут баги с версткой на разных сайтах
 					args: {
-						hashtag: ["#добавленоспомощьюбукмарклета"],
-						categori_id: 1,
+						hashtag: [],
+						categori_id: 8,
 						title: document.title,
-						description: "Добавлено с помощью букмарклета",
+						description: "",
 						url: document.location.href,
-						status: 1
+						status: 0
 					}
 				}
-			)
-		}
+	// добавляем iframe в конец текущей страницы
+	console.log("Начинаем отправку...");
+	document.body.appendChild(CHECKITLINK_WIN_IFRAME);
+
+	function timeoutLoad(){
+		// отправляем данные в наш фрейм
+		var CHECKITLINK_WIN = window.frames.CHECKITLINK;
+		CHECKITLINK_WIN.postMessage(JSON.stringify(LINK_DATA_OBJECT), "*");
+		console.log("Отправлено: %s", JSON.stringify(LINK_DATA_OBJECT));
 	}
 
-	var xmlHttp;
-
-	try {
-		xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-		try {
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		} catch (E) {
-			xmlHttp = false;
-		};
-	};
-
-	if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
-		xmlHttp = new XMLHttpRequest();
-	};
- 
-    xmlHttp.open(data.type, data.url, true);
-    // назначаем обработчик ответа от сервера
-    xmlHttp.onreadystatechange = function(){
-		if (xmlHttp.status != 200) {
-			console.log(xmlHttp.status + ': ' + xmlHttp.statusText);
-		}
-		else {
-			console.log(xmlHttp.responseText);
-		}
-	}
-	// отправляем данные
-    xmlHttp.send("request=" + data.data.request);
 }
