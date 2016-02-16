@@ -9,7 +9,7 @@ header("Access-Control-Allow-Credentials: true ");
 <html lang="ru">
 	<head>
 		<meta charset="utf-8">
-		<script type="text/javascript" src="https://checkitlink.com/assets/1eca0fe8/jquery.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
 	</head>
 	<body>
 
