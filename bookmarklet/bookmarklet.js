@@ -8,7 +8,7 @@ function addBookmarkInCheckitLink() {
 	// создаем iframe
 	var CHECKITLINK_WIN_IFRAME = document.createElement("iframe");
 	// установим адрес нашей страницы
-	CHECKITLINK_WIN_IFRAME.src = "https://checkitlink.com/testapi.php";
+	CHECKITLINK_WIN_IFRAME.src = "https://checkitlink.com/browser/bookmarklet";
 	// установим имя фрейма (потом будем по нему обращаться)
 	CHECKITLINK_WIN_IFRAME.name = "CHECKITLINK";
 	// установим функцию, которая выполнится после загрузки фрейма
