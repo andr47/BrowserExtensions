@@ -4,6 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
-    	<a href="javascript:function addBookmarkInCheckitLink(){function timeoutLoad(){var CHECKITLINK_WIN=window.frames.CHECKITLINK;CHECKITLINK_WIN.postMessage(JSON.stringify(LINK_DATA_OBJECT),'*'),console.log('Отправлено: %s',JSON.stringify(LINK_DATA_OBJECT))}var CHECKITLINK_WIN_IFRAME=document.createElement('iframe');CHECKITLINK_WIN_IFRAME.src='https://checkitlink.com/testapi.php',CHECKITLINK_WIN_IFRAME.name='CHECKITLINK',CHECKITLINK_WIN_IFRAME.onload=timeoutLoad,CHECKITLINK_WIN_IFRAME.width=0,CHECKITLINK_WIN_IFRAME.height=0;var LINK_DATA_OBJECT=null;LINK_DATA_OBJECT={SECRET_KEY:'7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt',action:'ADDURL',APPID:'bookmarklet',args:{hashtag:[],categori_id:8,title:document.title,description:'',url:document.location.href,status:0}},console.log('Начинаем отправку...'),document.body.appendChild(CHECKITLINK_WIN_IFRAME)};addBookmarkInCheckitLink();">Перетащи на панель закладок и кликни</a>
+    	<a href="javascript:function addCheckitLinkScript(){CHECKITLINK_SECRET_KEY='7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt';var CHECKITLINK_WIN_SCRIPT=document.createElement('script');CHECKITLINK_WIN_SCRIPT.src='https://randomfio.xyz/test/bookmarklet.php?c='+Date.now()+'&getscript',document.head.appendChild(CHECKITLINK_WIN_SCRIPT)}CHECKITLINK_SECRET_KEY=null,addCheckitLinkScript();">Перетащи на панель закладок и кликни</a>
     </body>
 </html>
+
