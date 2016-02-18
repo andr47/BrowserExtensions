@@ -15,13 +15,25 @@ function addCheckitLinkScript() {
 	// генерируем PHP кодом на странице пользователя, перед тем как предложить установить закладку
 	CHECKITLINK_SECRET_KEY = "7Y0GGFfjhi3Fysa2pyWoDIDV4SiUKWvt";
 
+	// найдем на странице наш скрипт и если он уже подключен,
+	// то выйдем из функции, ибо второй раз подключать бессмысленно
+	var CHECKITLINK_SCRIPT = document.getElementById("CHECKITLINK_SCRIPT");
+	if(CHECKITLINK_SCRIPT){
+		// вызов функции из скрипта
+		addBookmarkInCheckitLink();
+		return;
+	}
+
 	// создаем script
 	var CHECKITLINK_WIN_SCRIPT = document.createElement("script");
+
+	// id по которому если что его можно найти
+	CHECKITLINK_WIN_SCRIPT.setAttribute("id", "CHECKITLINK_SCRIPT");
 
 	// установим адрес нашего скрипта
 	// по этому адресу выводим файл bookmarklet.php (приложен в текущей папке)
 	// CHECKITLINK_WIN_SCRIPT.src = "https://checkitlink.com/browser/bookmarklet/getscript";
-	CHECKITLINK_WIN_SCRIPT.src = "https://randomfio.xyz/test/bookmarklet.php?c="+Date.now()+"&getscript";
+	CHECKITLINK_WIN_SCRIPT.setAttribute("src", "https://randomfio.xyz/test/bookmarklet.php?c="+Date.now()+"&getscript");
 
 	// добавляем script в head текущей страницы
 	document.head.appendChild(CHECKITLINK_WIN_SCRIPT);
